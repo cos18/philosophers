@@ -1,0 +1,21 @@
+# .github/workflows/philo_test.yml
+name: norminette
+on: [push]
+
+jobs:
+  norm_test:
+    runs-on: ubuntu-latest
+    name: 42 Norminette Test
+    strategy:
+      matrix:
+        path: [philo_one]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check norm in srcs
+      uses: alexandregv/norminette-action@v2
+      with:
+        flags: '${{ matrix.path }}/srcs'
+    - name: Check norm in includes
+      uses: alexandregv/norminette-action@v2
+      with:
+        flags: '${{ matrix.path }}/includes'
