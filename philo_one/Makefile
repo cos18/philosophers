@@ -6,7 +6,7 @@
 #    By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/28 17:12:56 by sunpark           #+#    #+#              #
-#    Updated: 2021/02/28 19:10:34 by sunpark          ###   ########.fr        #
+#    Updated: 2021/03/03 18:12:44 by sunpark          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ INCDIR	= ./includes/
 NAME	= philo_one
 
 GCC		= gcc
-GCCFLAG	= -Wall -Wextra -Werror
+GCCFLAG	= -Wall -Wextra -Werror -lpthread
 RM		= rm -f
 
 %.o:		%.c

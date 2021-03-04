@@ -29,8 +29,6 @@ philosopher with processes and semaphore
 
 ### 💻 How to Run
 
-> 🚨 Before running, `docker`, `minikube`, `kubectl` and `VirtualBox` are installed in local enviroment.
-
 ```bash
 $ cd philo_x
 $ make
