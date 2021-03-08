@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 17:10:07 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/03 19:23:04 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/08 16:41:09 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int		main_error_handle(char *msg)
 {
 	printf("[ERR] %s\n", msg);
-	return (0);
+	return (EXIT_FAILURE);
 }
 
 int		main(int argc, char **argv)
