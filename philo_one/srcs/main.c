@@ -6,22 +6,23 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 17:10:07 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/08 16:41:09 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/09 20:17:41 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int		main_error_handle(char *msg)
+int			main_error_handle(char *msg)
 {
 	printf("[ERR] %s\n", msg);
 	return (EXIT_FAILURE);
 }
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
-	int	locate;
-	int	argv_num[5];
+	int		locate;
+	int		argv_num[5];
+	t_stat	stat;
 
 	if (argc < 5 || 6 < argc)
 		return (main_error_handle("Wrong Argument count"));
@@ -33,10 +34,10 @@ int		main(int argc, char **argv)
 	}
 	if (locate == 4)
 		argv_num[locate] = STOP_ONLY_DEATH;
-	printf("number_of_philosophers: %d\n", argv_num[0]);
-	printf("time_to_die: %d\n", argv_num[1]);
-	printf("time_to_eat: %d\n", argv_num[2]);
-	printf("time_to_sleep: %d\n", argv_num[3]);
-	if (argv_num[4] != STOP_ONLY_DEATH)
-		printf("number_of_times_each_philosopher_must_eat: %d\n", argv_num[4]);
+	if (stat_init(&stat, argv_num) == EXIT_FAILURE)
+		return (main_error_handle("Error duruing malloc"));
+	if (run_thread(&stat) == EXIT_FAILURE)
+		main_error_handle("Error during running thread");
+	stat_free_destroy(&stat);
+	while (1);
 }

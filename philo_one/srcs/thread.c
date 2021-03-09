@@ -1,24 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/28 17:11:46 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/09 20:16:45 by sunpark          ###   ########.fr       */
+/*   Created: 2021/03/09 20:14:42 by sunpark           #+#    #+#             */
+/*   Updated: 2021/03/09 21:31:32 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#include "philo.h"
 
-# include <stdio.h>
-# include "philo_utils.h"
-# include "philo_struct.h"
-
-# define STOP_ONLY_DEATH -1
-
-int		run_thread(t_stat *stat);
-
-#endif
+int		run_thread(t_stat *stat)
+{
+	stat->pcnt = stat->pcnt;
+	return (EXIT_SUCCESS);
+}

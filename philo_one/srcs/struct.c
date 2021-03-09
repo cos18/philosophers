@@ -6,32 +6,24 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 18:30:23 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/08 18:11:42 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/09 21:20:50 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int		stat_philo_init(t_stat *stat, int locate)
+static void	stat_philo_init(t_stat *stat, int locate)
 {
 	stat->ps[locate].pnum = locate + 1;
 	stat->ps[locate].philo_stat = PHILO_SLEEP;
 	stat->ps[locate].eat_cnt = 0;
 	stat->ps[locate].stat = stat;
-	if (pthread_mutex_init(stat->ps[locate].mutex, NULL))
-		return (EXIT_FAILURE);
+	pthread_mutex_init(&(stat->ps[locate].mutex), NULL);
 }
 
-void	philo_mutex_free()
+int			stat_init(t_stat *stat, int *argv_num)
 {
-	int	test;
-
-	test = 10;
-}
-
-int		stat_init(t_stat *stat, int *argv_num)
-{
-	int	locate;
+	int		locate;
 
 	stat->pcnt = argv_num[0];
 	stat->die_time = argv_num[1];
@@ -40,13 +32,32 @@ int		stat_init(t_stat *stat, int *argv_num)
 	stat->min_eat_pcnt = argv_num[4];
 	if ((stat->ps = (t_philo *)malloc(sizeof(t_philo) * stat->pcnt)) == NULL)
 		return (EXIT_FAILURE);
+	if ((stat->fork_mutex
+	= (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * stat->pcnt)) == NULL)
+	{
+		free(stat->ps);
+		return (EXIT_FAILURE);
+	}
 	locate = -1;
 	while (++locate < stat->pcnt)
 	{
-		if (stat_philo_init(stat, locate) == EXIT_FAILURE)
-		{
-			free(stat->ps);
-			return (EXIT_FAILURE);
-		}
+		stat_philo_init(stat, locate);
+		pthread_mutex_init(stat->fork_mutex + locate, NULL);
 	}
+	pthread_mutex_init(&(stat->dead_mutex), NULL);
+	return (EXIT_SUCCESS);
+}
+
+void		stat_free_destroy(t_stat *stat)
+{
+	int		locate;
+
+	locate = -1;
+	while (++locate < stat->pcnt)
+	{
+		pthread_mutex_destroy(&(stat->ps[locate].mutex));
+		pthread_mutex_destroy(stat->fork_mutex + locate);
+	}
+	free(stat->ps);
+	free(stat->fork_mutex);
 }
