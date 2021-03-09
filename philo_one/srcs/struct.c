@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 18:30:23 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/09 21:20:50 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/09 21:34:55 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int			stat_init(t_stat *stat, int *argv_num)
 	stat->min_eat_pcnt = argv_num[4];
 	if ((stat->ps = (t_philo *)malloc(sizeof(t_philo) * stat->pcnt)) == NULL)
 		return (EXIT_FAILURE);
-	if ((stat->fork_mutex
-	= (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * stat->pcnt)) == NULL)
+	if ((stat->fork_mutex =
+	(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * stat->pcnt)) == NULL)
 	{
 		free(stat->ps);
 		return (EXIT_FAILURE);

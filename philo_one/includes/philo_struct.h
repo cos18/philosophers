@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 19:20:31 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/09 20:28:29 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/09 21:34:19 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define PHILO_SLEEP 3
 # define PHILO_DIE 4
 
-struct				s_stat;
+struct s_stat;
 
 typedef struct		s_philo
 {

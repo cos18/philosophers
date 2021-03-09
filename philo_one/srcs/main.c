@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 17:10:07 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/09 20:17:41 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/09 21:34:32 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,4 @@ int			main(int argc, char **argv)
 	if (run_thread(&stat) == EXIT_FAILURE)
 		main_error_handle("Error during running thread");
 	stat_free_destroy(&stat);
-	while (1);
 }
