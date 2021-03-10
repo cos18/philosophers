@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 18:30:23 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/09 21:34:55 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/10 21:00:02 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 static void	stat_philo_init(t_stat *stat, int locate)
 {
 	stat->ps[locate].pnum = locate + 1;
-	stat->ps[locate].philo_stat = PHILO_SLEEP;
+	stat->ps[locate].philo_stat = PHILO_THINK;
 	stat->ps[locate].eat_cnt = 0;
 	stat->ps[locate].stat = stat;
-	pthread_mutex_init(&(stat->ps[locate].mutex), NULL);
+	pthread_mutex_init(&(stat->ps[locate].use_mutex), NULL);
+	pthread_mutex_init(&(stat->ps[locate].eat_mutex), NULL);
 }
 
 int			stat_init(t_stat *stat, int *argv_num)
@@ -44,7 +45,9 @@ int			stat_init(t_stat *stat, int *argv_num)
 		stat_philo_init(stat, locate);
 		pthread_mutex_init(stat->fork_mutex + locate, NULL);
 	}
-	pthread_mutex_init(&(stat->dead_mutex), NULL);
+	pthread_mutex_init(&(stat->print_mutex), NULL);
+	pthread_mutex_init(&(stat->die_mutex), NULL);
+	pthread_mutex_lock(&(stat->die_mutex));
 	return (EXIT_SUCCESS);
 }
 
@@ -55,7 +58,8 @@ void		stat_free_destroy(t_stat *stat)
 	locate = -1;
 	while (++locate < stat->pcnt)
 	{
-		pthread_mutex_destroy(&(stat->ps[locate].mutex));
+		pthread_mutex_destroy(&(stat->ps[locate].use_mutex));
+		pthread_mutex_destroy(&(stat->ps[locate].eat_mutex));
 		pthread_mutex_destroy(stat->fork_mutex + locate);
 	}
 	free(stat->ps);

@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 19:20:31 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/09 21:34:19 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/10 21:36:26 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,18 @@
 # define PHILO_STRUCT_H
 
 # include <pthread.h>
-# include "philo_utils.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <pthread.h>
+# include <sys/time.h>
 
 # define PHILO_THINK 0
 # define PHILO_FORK 1
 # define PHILO_EAT 2
 # define PHILO_SLEEP 3
 # define PHILO_DIE 4
+# define END_EAT 5
 
 struct s_stat;
 
@@ -29,7 +34,9 @@ typedef struct		s_philo
 	int				pnum;
 	int				philo_stat;
 	int				eat_cnt;
-	pthread_mutex_t	mutex;
+	uint64_t		starve_dead;
+	pthread_mutex_t	use_mutex;
+	pthread_mutex_t eat_mutex;
 	struct s_stat	*stat;
 }					t_philo;
 
@@ -42,7 +49,8 @@ typedef struct		s_stat
 	int				min_eat_pcnt;
 	uint64_t		start_t;
 	pthread_mutex_t	*fork_mutex;
-	pthread_mutex_t dead_mutex;
+	pthread_mutex_t die_mutex;
+	pthread_mutex_t print_mutex;
 	t_philo			*ps;
 }					t_stat;
 

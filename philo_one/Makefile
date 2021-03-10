@@ -6,12 +6,11 @@
 #    By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/28 17:12:56 by sunpark           #+#    #+#              #
-#    Updated: 2021/03/09 21:30:54 by sunpark          ###   ########.fr        #
+#    Updated: 2021/03/10 21:35:14 by sunpark          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		= main.c struct.c thread.c\
-		utils/number_utils.c
+SRC		= main.c struct.c thread.c utils.c philo_work.c
 
 SRCDIR	= ./srcs/
 SRCS	= $(addprefix $(SRCDIR), $(SRC))
