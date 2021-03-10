@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 20:51:03 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/10 21:36:56 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/10 22:09:22 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	take_forks(t_philo *p)
 	print_message(p->stat, PHILO_FORK, p->pnum);
 	pthread_mutex_lock(&(p->stat->fork_mutex[(p->pnum + 1) % p->stat->pcnt]));
 	print_message(p->stat, PHILO_FORK, p->pnum);
-	
 }
 
 void	eat(t_philo *p)

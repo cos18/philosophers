@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 18:32:57 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/10 21:38:08 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/10 21:50:53 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void				print_message(t_stat *stat, int status, int philo_num)
 		printf("End eat number_of_times_each_philosopher_must_eat by each!\n");
 	else
 	{
-		printf("%dms %d ", (int)(get_time() - stat->start_t), philo_num);
+		printf("%d %d ", (int)(get_time() - stat->start_t), philo_num);
 		if (status == PHILO_THINK)
 			printf("is thinking\n");
 		else if (status == PHILO_FORK)

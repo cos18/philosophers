@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 17:11:46 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/10 21:42:03 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/10 21:47:08 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ int		run_thread(t_stat *stat);
 
 void	take_forks(t_philo *p);
 void	eat(t_philo *p);
-void	sleep_thinks(t_philo *p);
+void	sleep_think(t_philo *p);
 
 #endif
