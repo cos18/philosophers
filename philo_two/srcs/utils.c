@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 18:32:57 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/11 17:55:08 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/11 18:00:01 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,7 @@ void				print_message(t_stat *stat, int status, int philo_num)
 	if (end == FALSE)
 	{
 		if (status == END_EAT)
-		{
 			printf("End eat count by each!\n");
-			end = TRUE;
-		}
 		else
 		{
 			printf("%d %d ", (int)(get_time() - stat->start_t), philo_num);
@@ -65,11 +62,10 @@ void				print_message(t_stat *stat, int status, int philo_num)
 			else if (status == PHILO_SLEEP)
 				printf("is sleeping\n");
 			else
-			{
 				printf("died\n");
-				end = TRUE;
-			}
 		}
+		if (status == END_EAT || status == PHILO_DIE)
+			end = TRUE;
 	}
 	pthread_mutex_unlock(&(stat->print_mutex));
 }

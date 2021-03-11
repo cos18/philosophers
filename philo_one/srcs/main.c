@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 17:10:07 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/11 17:13:03 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/11 17:57:24 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,4 @@ int			main(int argc, char **argv)
 	pthread_mutex_lock(&(stat.die_mutex));
 	pthread_mutex_unlock(&(stat.die_mutex));
 	stat_free_destroy(&stat);
-	while (1);
 }
