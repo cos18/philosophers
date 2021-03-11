@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 18:30:23 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/10 21:00:02 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/11 17:00:10 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void		stat_free_destroy(t_stat *stat)
 		pthread_mutex_destroy(&(stat->ps[locate].eat_mutex));
 		pthread_mutex_destroy(stat->fork_mutex + locate);
 	}
+	pthread_mutex_destroy(&(stat->print_mutex));
+	pthread_mutex_destroy(&(stat->die_mutex));
 	free(stat->ps);
 	free(stat->fork_mutex);
 }

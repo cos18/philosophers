@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:14:42 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/11 15:10:16 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/11 17:03:19 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static int		run_philo(t_stat *stat, int pnum)
 		pthread_detach(tid);
 		pnum += 2;
 	}
-	if (pnum == 0)
+	if (pnum % 2 == 0)
 		usleep(500 * stat->eat_time);
 	return (EXIT_SUCCESS);
 }

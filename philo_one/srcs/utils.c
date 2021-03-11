@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 18:32:57 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/11 15:13:37 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/11 17:02:23 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,24 +43,33 @@ uint64_t			get_time(void)
 
 void				print_message(t_stat *stat, int status, int philo_num)
 {
+	static int		end = FALSE;
+
 	pthread_mutex_lock(&(stat->print_mutex));
-	if (status == END_EAT)
-		printf("End eat number_of_times_each_philosopher_must_eat by each!\n");
-	else
+	if (end == FALSE)
 	{
-		printf("%d %d ", (int)(get_time() - stat->start_t), philo_num);
-		if (status == PHILO_THINK)
-			printf("is thinking\n");
-		else if (status == PHILO_FORK)
-			printf("has taken a fork\n");
-		else if (status == PHILO_EAT)
-			printf("is eating\n");
-		else if (status == PHILO_SLEEP)
-			printf("is sleeping\n");
-		else if (status == PHILO_DIE)
-			printf("died\n");
+		if (status == END_EAT)
+		{
+			printf("End eat count by each!\n");
+			end = TRUE;
+		}
 		else
-			printf("drop a fork\n");
+		{
+			printf("%d %d ", (int)(get_time() - stat->start_t), philo_num);
+			if (status == PHILO_THINK)
+				printf("is thinking\n");
+			else if (status == PHILO_FORK)
+				printf("has taken a fork\n");
+			else if (status == PHILO_EAT)
+				printf("is eating\n");
+			else if (status == PHILO_SLEEP)
+				printf("is sleeping\n");
+			else
+			{
+				printf("died\n");
+				end = TRUE;
+			}
+		}
 	}
 	pthread_mutex_unlock(&(stat->print_mutex));
 }
