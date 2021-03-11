@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 19:20:31 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/10 21:36:26 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/11 14:59:37 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define PHILO_SLEEP 3
 # define PHILO_DIE 4
 # define END_EAT 5
+# define DROP_FORK 6
 
 struct s_stat;
 

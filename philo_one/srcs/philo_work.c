@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 20:51:03 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/10 22:09:22 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/11 16:25:03 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 void	take_forks(t_philo *p)
 {
-	pthread_mutex_lock(&(p->stat->fork_mutex[p->pnum]));
+	pthread_mutex_lock(&(p->stat->fork_mutex[(p->pnum - 1 + p->stat->pcnt)
+												% p->stat->pcnt]));
 	p->philo_stat = PHILO_FORK;
 	print_message(p->stat, PHILO_FORK, p->pnum);
-	pthread_mutex_lock(&(p->stat->fork_mutex[(p->pnum + 1) % p->stat->pcnt]));
+	pthread_mutex_lock(&(p->stat->fork_mutex[p->pnum % p->stat->pcnt]));
 	print_message(p->stat, PHILO_FORK, p->pnum);
 }
 
@@ -34,10 +35,11 @@ void	eat(t_philo *p)
 
 void	sleep_think(t_philo *p)
 {
+	pthread_mutex_unlock(&(p->stat->fork_mutex[(p->pnum - 1 + p->stat->pcnt)
+												% p->stat->pcnt]));
+	pthread_mutex_unlock(&(p->stat->fork_mutex[p->pnum % p->stat->pcnt]));
 	print_message(p->stat, PHILO_SLEEP, p->pnum);
 	p->philo_stat = PHILO_SLEEP;
-	pthread_mutex_unlock(&(p->stat->fork_mutex[p->pnum]));
-	pthread_mutex_unlock(&(p->stat->fork_mutex[(p->pnum + 1) % p->stat->pcnt]));
 	usleep(1000 * p->stat->sleep_time);
 	p->philo_stat = PHILO_THINK;
 	print_message(p->stat, PHILO_THINK, p->pnum);

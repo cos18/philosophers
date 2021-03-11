@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:14:42 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/10 21:39:39 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/11 15:10:16 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void		*monitor_eat(void *stat_void)
 
 	stat = (t_stat *)stat_void;
 	check = -1;
-	while (++check < stat->min_eat_pcnt)
+	while (++check <= stat->min_eat_pcnt)
 	{
 		pnum = 0;
 		while (pnum < stat->pcnt)
@@ -90,7 +90,8 @@ static int		run_philo(t_stat *stat, int pnum)
 		pthread_detach(tid);
 		pnum += 2;
 	}
-	usleep(100);
+	if (pnum == 0)
+		usleep(500 * stat->eat_time);
 	return (EXIT_SUCCESS);
 }
 

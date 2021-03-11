@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 18:32:57 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/10 21:50:53 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/11 15:13:37 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,10 @@ void				print_message(t_stat *stat, int status, int philo_num)
 			printf("is eating\n");
 		else if (status == PHILO_SLEEP)
 			printf("is sleeping\n");
-		else
+		else if (status == PHILO_DIE)
 			printf("died\n");
+		else
+			printf("drop a fork\n");
 	}
 	pthread_mutex_unlock(&(stat->print_mutex));
 }
