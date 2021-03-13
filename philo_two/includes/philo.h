@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 17:11:46 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/13 18:42:49 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/13 20:41:56 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdio.h>
 # include <semaphore.h>
+# include <string.h>
 # include "philo_utils.h"
 # include "philo_struct.h"
 

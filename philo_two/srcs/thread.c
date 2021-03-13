@@ -6,33 +6,50 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:14:42 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/13 19:38:54 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/13 20:59:58 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+static void		check_eat_cnt(int *is_not_end, t_stat *stat, int *check,
+							int *check_cnt)
+{
+	int			pnum;
+
+	pnum = -1;
+	while (++pnum < stat->pcnt)
+	{
+		if (check[pnum])
+			continue;
+		if (stat->ps[pnum].eat_cnt >= stat->min_eat_pcnt)
+		{
+			check[pnum] = TRUE;
+			*check_cnt = *check_cnt + 1;
+			if (*check_cnt == stat->pcnt)
+			{
+				*is_not_end = FALSE;
+				break;
+			}
+		}
+	}
+}
+
 static void		*monitor_eat(void *stat_void)
 {
 	t_stat		*stat;
-	int			check;
-	int			pnum;
+	int			*check;
+	int			check_cnt;
+	int			is_not_end;
 
 	stat = (t_stat *)stat_void;
-	check = -1;
-	while (++check <= stat->min_eat_pcnt)
-	{
-		pnum = 0;
-		while (pnum < stat->pcnt)
-		{
-			if (stat->ps[pnum].philo_stat == PHILO_DIE)
-				return ((void*)0);
-			if (sem_wait(stat->ps[pnum].eat_sem))
-				return ((void*)0);
-			if (stat->ps[pnum++].philo_stat == PHILO_DIE)
-				return ((void*)0);
-		}
-	}
+	if ((check = (int *)malloc(sizeof(int) * stat->pcnt)) == NULL)
+		return ((void*)0);
+	memset(check, FALSE, sizeof(int) * stat->pcnt);
+	check_cnt = 0;
+	is_not_end = TRUE;
+	while (is_not_end)
+		check_eat_cnt(&is_not_end, stat, check, &check_cnt);
 	if (print_message(stat, END_EAT, 0))
 		return ((void*)0);
 	sem_post(stat->die_sem);
@@ -46,20 +63,15 @@ static void		*monitor_p(void *philo_void)
 	p = (t_philo*)philo_void;
 	while (TRUE)
 	{
-		if (sem_wait(p->use_sem))
-			return ((void*)0);
-		if (p->philo_stat != PHILO_EAT && get_time() > p->starve_dead)
+		if (get_time() > p->starve_dead)
 		{
 			p->philo_stat = PHILO_DIE;
 			if (print_message(p->stat, PHILO_DIE, p->pnum))
 				return ((void*)0);
 			if (sem_post(p->stat->die_sem))
 				return ((void*)0);
-			sem_post(p->use_sem);
 			return ((void*)0);
 		}
-		if (sem_post(p->use_sem))
-			return ((void*)0);
 		usleep(1000);
 	}
 }

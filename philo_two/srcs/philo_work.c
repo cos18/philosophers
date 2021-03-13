@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 20:51:03 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/13 19:13:39 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/13 20:44:32 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,12 @@ int	take_forks(t_philo *p)
 
 int	eat(t_philo *p)
 {
-	if (sem_wait(p->use_sem))
-		return (SEM_FAIL);
 	p->philo_stat = PHILO_EAT;
 	if (print_message(p->stat, PHILO_EAT, p->pnum))
 		return (SEM_FAIL);
 	p->starve_dead = get_time() + p->stat->die_time;
 	usleep(1000 * p->stat->eat_time);
-	if (sem_post(p->use_sem))
-		return (SEM_FAIL);
-	if (p->stat->min_eat_pcnt != STOP_ONLY_DEATH && sem_post(p->eat_sem))
-		return (SEM_FAIL);
+	(p->eat_cnt)++;
 	return (SEM_SUCCESS);
 }
 

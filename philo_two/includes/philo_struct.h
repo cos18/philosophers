@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 19:20:31 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/13 17:19:56 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/13 20:26:39 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ typedef struct		s_philo
 	int				philo_stat;
 	int				eat_cnt;
 	uint64_t		starve_dead;
-	sem_t			*use_sem;
-	sem_t			*eat_sem;
 	struct s_stat	*stat;
 }					t_philo;
 
