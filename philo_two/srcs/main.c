@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 17:10:07 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/11 17:59:44 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/13 19:11:18 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	main_error_handle(t_stat *stat, char *msg)
 {
 	printf("[ERR] %s\n", msg);
 	if (stat)
-		stat_free_destroy(stat);
+		stat_free_close(stat);
 	return (EXIT_FAILURE);
 }
 
@@ -41,7 +41,7 @@ int			main(int argc, char **argv)
 		return (main_error_handle(NULL, "Error duruing malloc"));
 	if (run_thread(&stat) == EXIT_FAILURE)
 		main_error_handle(&stat, "Error during running thread");
-	pthread_mutex_lock(&(stat.die_mutex));
-	pthread_mutex_unlock(&(stat.die_mutex));
-	stat_free_destroy(&stat);
+	sem_wait(stat.die_sem);
+	sem_post(stat.die_sem);
+	stat_free_close(&stat);
 }

@@ -6,41 +6,52 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 20:51:03 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/11 17:03:21 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/13 19:13:39 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	take_forks(t_philo *p)
+int	take_forks(t_philo *p)
 {
-	pthread_mutex_lock(&(p->stat->fork_mutex[(p->pnum - 1 + p->stat->pcnt)
-												% p->stat->pcnt]));
+	if (sem_wait(p->stat->fork_sem))
+		return (SEM_FAIL);
 	p->philo_stat = PHILO_FORK;
-	print_message(p->stat, PHILO_FORK, p->pnum);
-	pthread_mutex_lock(&(p->stat->fork_mutex[p->pnum % p->stat->pcnt]));
-	print_message(p->stat, PHILO_FORK, p->pnum);
+	if (print_message(p->stat, PHILO_FORK, p->pnum))
+		return (SEM_FAIL);
+	if (sem_wait(p->stat->fork_sem))
+		return (SEM_FAIL);
+	return (print_message(p->stat, PHILO_FORK, p->pnum) ? SEM_FAIL
+														: SEM_SUCCESS);
 }
 
-void	eat(t_philo *p)
+int	eat(t_philo *p)
 {
-	pthread_mutex_lock(&(p->use_mutex));
+	if (sem_wait(p->use_sem))
+		return (SEM_FAIL);
 	p->philo_stat = PHILO_EAT;
-	print_message(p->stat, PHILO_EAT, p->pnum);
+	if (print_message(p->stat, PHILO_EAT, p->pnum))
+		return (SEM_FAIL);
 	p->starve_dead = get_time() + p->stat->die_time;
 	usleep(1000 * p->stat->eat_time);
-	pthread_mutex_unlock(&(p->use_mutex));
-	pthread_mutex_unlock(&(p->eat_mutex));
+	if (sem_post(p->use_sem))
+		return (SEM_FAIL);
+	if (p->stat->min_eat_pcnt != STOP_ONLY_DEATH && sem_post(p->eat_sem))
+		return (SEM_FAIL);
+	return (SEM_SUCCESS);
 }
 
-void	sleep_think(t_philo *p)
+int	sleep_think(t_philo *p)
 {
-	pthread_mutex_unlock(&(p->stat->fork_mutex[(p->pnum - 1 + p->stat->pcnt)
-												% p->stat->pcnt]));
-	pthread_mutex_unlock(&(p->stat->fork_mutex[p->pnum % p->stat->pcnt]));
-	print_message(p->stat, PHILO_SLEEP, p->pnum);
+	if (print_message(p->stat, PHILO_SLEEP, p->pnum))
+		return (SEM_FAIL);
+	if (sem_post(p->stat->fork_sem))
+		return (SEM_FAIL);
+	if (sem_post(p->stat->fork_sem))
+		return (SEM_FAIL);
 	p->philo_stat = PHILO_SLEEP;
 	usleep(1000 * p->stat->sleep_time);
 	p->philo_stat = PHILO_THINK;
-	print_message(p->stat, PHILO_THINK, p->pnum);
+	return (print_message(p->stat, PHILO_THINK, p->pnum) ? SEM_FAIL
+														: SEM_SUCCESS);
 }

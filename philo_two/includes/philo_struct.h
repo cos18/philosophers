@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 19:20:31 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/11 17:47:24 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/13 17:19:56 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,6 @@ typedef struct		s_stat
 }					t_stat;
 
 int					stat_init(t_stat *stat, int *argv_num);
-void				stat_free_destroy(t_stat *stat);
+int					stat_free_close(t_stat *stat);
 
 #endif

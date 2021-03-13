@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:14:42 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/11 17:03:19 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/13 19:38:54 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,15 @@ static void		*monitor_eat(void *stat_void)
 		{
 			if (stat->ps[pnum].philo_stat == PHILO_DIE)
 				return ((void*)0);
-			pthread_mutex_lock(&(stat->ps[pnum].eat_mutex));
+			if (sem_wait(stat->ps[pnum].eat_sem))
+				return ((void*)0);
 			if (stat->ps[pnum++].philo_stat == PHILO_DIE)
 				return ((void*)0);
 		}
 	}
-	print_message(stat, END_EAT, 0);
-	pthread_mutex_unlock(&(stat->die_mutex));
+	if (print_message(stat, END_EAT, 0))
+		return ((void*)0);
+	sem_post(stat->die_sem);
 	return ((void*)0);
 }
 
@@ -44,16 +46,20 @@ static void		*monitor_p(void *philo_void)
 	p = (t_philo*)philo_void;
 	while (TRUE)
 	{
-		pthread_mutex_lock(&(p->use_mutex));
-		if (get_time() > p->starve_dead)
+		if (sem_wait(p->use_sem))
+			return ((void*)0);
+		if (p->philo_stat != PHILO_EAT && get_time() > p->starve_dead)
 		{
 			p->philo_stat = PHILO_DIE;
-			print_message(p->stat, PHILO_DIE, p->pnum);
-			pthread_mutex_unlock(&(p->stat->die_mutex));
-			pthread_mutex_unlock(&(p->use_mutex));
+			if (print_message(p->stat, PHILO_DIE, p->pnum))
+				return ((void*)0);
+			if (sem_post(p->stat->die_sem))
+				return ((void*)0);
+			sem_post(p->use_sem);
 			return ((void*)0);
 		}
-		pthread_mutex_unlock(&(p->use_mutex));
+		if (sem_post(p->use_sem))
+			return ((void*)0);
 		usleep(1000);
 	}
 }
@@ -70,9 +76,12 @@ static void		*philo_work(void *philo_void)
 	pthread_detach(tid);
 	while (1)
 	{
-		take_forks(p);
-		eat(p);
-		sleep_think(p);
+		if (take_forks(p))
+			return ((void*)0);
+		if (eat(p))
+			return ((void*)0);
+		if (sleep_think(p))
+			return ((void*)0);
 	}
 	return ((void*)0);
 }
