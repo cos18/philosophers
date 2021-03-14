@@ -6,15 +6,15 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 18:32:57 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/14 17:56:55 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/14 17:22:55 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int					is_number_char(char c)
+int					ft_strlen(char *str)
 {
-	return (('0' <= c && c <= '9') ? TRUE : FALSE);
+	return (*str ? 1 + ft_strlen(str + 1) : 0);
 }
 
 int					atoi_strict(char *str)
@@ -43,32 +43,46 @@ uint64_t			get_time(void)
 	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
 }
 
-void				print_message(t_stat *stat, int status, int philo_num)
+static void			print_message_bt_status(t_stat *stat, int status,
+											int philo_num)
+{
+	if (status == END_EAT)
+		printf("End eat count by each!\n");
+	else
+	{
+		printf("%d %d ", (int)(get_time() - stat->start_t), philo_num);
+		if (status == PHILO_THINK)
+			printf("is thinking\n");
+		else if (status == PHILO_FORK)
+			printf("has taken a fork\n");
+		else if (status == PHILO_EAT)
+			printf("is eating\n");
+		else if (status == PHILO_SLEEP)
+			printf("is sleeping\n");
+		else
+			printf("died\n");
+	}
+}
+
+int					print_message(t_stat *stat, int status, int philo_num)
 {
 	static int		end = FALSE;
+	int				result;
 
-	pthread_mutex_lock(&(stat->print_mutex));
+	if (sem_wait(stat->print_sem))
+		return (SEM_FAIL);
+	result = SEM_FAIL;
 	if (end == FALSE)
 	{
-		if (status == END_EAT)
-			printf("End eat count by each!\n");
-		else
-		{
-			printf("%d %d ", (int)(get_time() - stat->start_t), philo_num);
-			if (status == PHILO_THINK)
-				printf("is thinking\n");
-			else if (status == PHILO_FORK)
-				printf("has taken a fork\n");
-			else if (status == PHILO_EAT)
-				printf("is eating\n");
-			else if (status == PHILO_SLEEP)
-				printf("is sleeping\n");
-			else
-				printf("died\n");
-		}
+		print_message_bt_status(stat, status, philo_num);
 		if (status == END_EAT || status == PHILO_DIE)
 			end = TRUE;
+		result = SEM_SUCCESS;
 	}
 	if (end == FALSE)
-		pthread_mutex_unlock(&(stat->print_mutex));
+	{
+		if (sem_post(stat->print_sem))
+			return (SEM_FAIL);
+	}
+	return (result);
 }

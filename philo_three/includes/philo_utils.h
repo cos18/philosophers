@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 17:12:31 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/14 17:02:03 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/14 16:01:58 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,28 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <pthread.h>
 # include <sys/time.h>
+# include <semaphore.h>
 
 # define TRUE 1
 # define FALSE 0
 # define UTIL_ERR -1
+# define SEM_SUCCESS 0
+# define SEM_FAIL -1
 
-int			is_number_char(char c);
+int			ft_strlen(char *str);
 int			atoi_strict(char *str);
 uint64_t	get_time(void);
-void		print_message(t_stat *stat, int status, int philo_num);
+int			print_message(t_stat *stat, int status, int philo_num);
+
+# define SEM_PRINT_NAME "SEM_PRINT"
+# define SEM_FORK_NAME "SEM_FORK"
+# define SEM_DIE_NAME "SEM_DIE"
+# define SEM_FIN_NAME "SEM_FIN"
+
+sem_t		*sem_custom_init(char *name, int value);
+char		*make_sem_name(char *sem_stat_name, int philo_num);
+
 void		check_eat_cnt(int *is_not_end, t_stat *stat, int *check,
 							int *check_cnt);
 

@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 18:30:23 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/13 20:52:39 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/14 15:58:19 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ int			stat_init(t_stat *stat, int *argv_num)
 	if ((stat->print_sem = sem_custom_init(SEM_PRINT_NAME, 1)) == SEM_FAILED ||
 	(stat->fork_sem = sem_custom_init(SEM_FORK_NAME, stat->pcnt))
 		== SEM_FAILED ||
-	(stat->die_sem = sem_custom_init(SEM_DIE_NAME, 1)) == SEM_FAILED)
+	(stat->die_sem = sem_custom_init(SEM_DIE_NAME, 0)) == SEM_FAILED)
 		return (stat_free_close(stat));
-	sem_wait(stat->die_sem);
 	return (EXIT_SUCCESS);
 }

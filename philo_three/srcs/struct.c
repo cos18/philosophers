@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 18:30:23 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/14 17:03:22 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/14 16:25:15 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,28 @@ static void	stat_philo_init(t_stat *stat, int locate)
 	stat->ps[locate].philo_stat = PHILO_THINK;
 	stat->ps[locate].eat_cnt = 0;
 	stat->ps[locate].stat = stat;
-	pthread_mutex_init(&(stat->ps[locate].use_mutex), NULL);
+	stat->ps[locate].pid = -1;
+}
+
+int			stat_free_close(t_stat *stat)
+{
+	int		locate;
+
+	if (stat->ps)
+	{
+		locate = -1;
+		while (++locate < stat->pcnt)
+		{
+			if (stat->ps[locate].pid > 0)
+				kill(stat->ps[locate].pid, SIGKILL);
+		}
+		free(stat->ps);
+	}
+	sem_unlink(SEM_FORK_NAME);
+	sem_unlink(SEM_DIE_NAME);
+	sem_unlink(SEM_PRINT_NAME);
+	sem_unlink(SEM_FIN_NAME);
+	return (EXIT_FAILURE);
 }
 
 int			stat_init(t_stat *stat, int *argv_num)
@@ -30,38 +51,20 @@ int			stat_init(t_stat *stat, int *argv_num)
 	stat->eat_time = argv_num[2];
 	stat->sleep_time = argv_num[3];
 	stat->min_eat_pcnt = argv_num[4];
+	stat->print_sem = NULL;
+	stat->fork_sem = NULL;
+	stat->die_sem = NULL;
+	stat->fin_sem = NULL;
 	if ((stat->ps = (t_philo *)malloc(sizeof(t_philo) * stat->pcnt)) == NULL)
 		return (EXIT_FAILURE);
-	if ((stat->fork_mutex =
-	(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * stat->pcnt)) == NULL)
-	{
-		free(stat->ps);
-		return (EXIT_FAILURE);
-	}
 	locate = -1;
 	while (++locate < stat->pcnt)
-	{
 		stat_philo_init(stat, locate);
-		pthread_mutex_init(stat->fork_mutex + locate, NULL);
-	}
-	pthread_mutex_init(&(stat->print_mutex), NULL);
-	pthread_mutex_init(&(stat->die_mutex), NULL);
-	pthread_mutex_lock(&(stat->die_mutex));
+	if ((stat->print_sem = sem_custom_init(SEM_PRINT_NAME, 1)) == SEM_FAILED ||
+	(stat->fork_sem = sem_custom_init(SEM_FORK_NAME, stat->pcnt))
+		== SEM_FAILED ||
+	(stat->die_sem = sem_custom_init(SEM_DIE_NAME, 0)) == SEM_FAILED || 
+	(stat->fin_sem = sem_custom_init(SEM_FIN_NAME, 0)) == SEM_FAILED)
+		return (stat_free_close(stat));
 	return (EXIT_SUCCESS);
-}
-
-void		stat_free_destroy(t_stat *stat)
-{
-	int		locate;
-
-	locate = -1;
-	while (++locate < stat->pcnt)
-	{
-		pthread_mutex_destroy(&(stat->ps[locate].use_mutex));
-		pthread_mutex_destroy(stat->fork_mutex + locate);
-	}
-	pthread_mutex_destroy(&(stat->print_mutex));
-	pthread_mutex_destroy(&(stat->die_mutex));
-	free(stat->ps);
-	free(stat->fork_mutex);
 }

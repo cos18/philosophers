@@ -8,7 +8,7 @@ jobs:
     name: 42 Norminette Test
     strategy:
       matrix:
-        path: [philo_one, philo_two]
+        path: [philo_one, philo_two, philo_three]
     steps:
     - uses: actions/checkout@v2
     - name: Check norm in srcs

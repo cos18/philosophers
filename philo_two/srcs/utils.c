@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 18:32:57 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/13 17:25:44 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/14 17:23:16 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int					atoi_strict(char *str)
 		result += (*str - '0');
 		str++;
 	}
+	if (result == 0)
+		return (UTIL_ERR);
 	return (result);
 }
 

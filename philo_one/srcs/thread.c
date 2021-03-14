@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:14:42 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/11 17:03:19 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/14 17:05:05 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,18 @@
 static void		*monitor_eat(void *stat_void)
 {
 	t_stat		*stat;
-	int			check;
-	int			pnum;
+	int			*check;
+	int			check_cnt;
+	int			is_not_end;
 
 	stat = (t_stat *)stat_void;
-	check = -1;
-	while (++check <= stat->min_eat_pcnt)
-	{
-		pnum = 0;
-		while (pnum < stat->pcnt)
-		{
-			if (stat->ps[pnum].philo_stat == PHILO_DIE)
-				return ((void*)0);
-			pthread_mutex_lock(&(stat->ps[pnum].eat_mutex));
-			if (stat->ps[pnum++].philo_stat == PHILO_DIE)
-				return ((void*)0);
-		}
-	}
+	if ((check = (int *)malloc(sizeof(int) * stat->pcnt)) == NULL)
+		return ((void*)0);
+	memset(check, FALSE, sizeof(int) * stat->pcnt);
+	check_cnt = 0;
+	is_not_end = TRUE;
+	while (is_not_end)
+		check_eat_cnt(&is_not_end, stat, check, &check_cnt);
 	print_message(stat, END_EAT, 0);
 	pthread_mutex_unlock(&(stat->die_mutex));
 	return ((void*)0);

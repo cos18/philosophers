@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 17:10:07 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/14 18:41:20 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/14 17:24:37 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	main_error_handle(t_stat *stat, char *msg)
 {
 	printf("[ERR] %s\n", msg);
 	if (stat)
-		stat_free_destroy(stat);
+		stat_free_close(stat);
 	return (EXIT_FAILURE);
 }
 
@@ -41,10 +41,8 @@ int			main(int argc, char **argv)
 		return (main_error_handle(NULL, "Minimum Philosopher is two"));
 	if (stat_init(&stat, argv_num) == EXIT_FAILURE)
 		return (main_error_handle(NULL, "Error duruing malloc"));
-	if (run_thread(&stat) == EXIT_FAILURE)
+	if (run_process(&stat) == EXIT_FAILURE)
 		main_error_handle(&stat, "Error during running thread");
-	pthread_mutex_lock(&(stat.die_mutex));
-	pthread_mutex_unlock(&(stat.die_mutex));
-	usleep(100000);
-	stat_free_destroy(&stat);
+	sem_wait(stat.die_sem);
+	stat_free_close(&stat);
 }

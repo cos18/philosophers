@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_utils.h                                      :+:      :+:    :+:   */
+/*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/28 17:12:31 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/14 17:02:03 by sunpark          ###   ########.fr       */
+/*   Created: 2021/02/28 17:11:46 by sunpark           #+#    #+#             */
+/*   Updated: 2021/03/14 16:18:40 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_UTILS_H
-# define PHILO_UTILS_H
+#ifndef PHILO_H
+# define PHILO_H
 
-# include "philo_struct.h"
 # include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
+# include <semaphore.h>
 # include <pthread.h>
-# include <sys/time.h>
+# include <string.h>
+# include <signal.h>
+# include "philo_utils.h"
+# include "philo_struct.h"
 
-# define TRUE 1
-# define FALSE 0
-# define UTIL_ERR -1
+# define STOP_ONLY_DEATH -1
 
-int			is_number_char(char c);
-int			atoi_strict(char *str);
-uint64_t	get_time(void);
-void		print_message(t_stat *stat, int status, int philo_num);
-void		check_eat_cnt(int *is_not_end, t_stat *stat, int *check,
-							int *check_cnt);
+int		run_process(t_stat *stat);
+
+int		take_forks(t_philo *p);
+int		eat(t_philo *p);
+int		drop_forks(t_philo *p);
+int		sleep_think(t_philo *p);
+
+void	*monitor_eat(void *stat_void);
+void	*monitor_p(void *philo_void);
 
 #endif

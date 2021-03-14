@@ -6,11 +6,12 @@
 #    By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/28 17:12:56 by sunpark           #+#    #+#              #
-#    Updated: 2021/03/14 18:40:33 by sunpark          ###   ########.fr        #
+#    Updated: 2021/03/14 16:25:42 by sunpark          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		= main.c struct.c thread.c utils.c philo_work.c thread_utils.c
+SRC		= main.c struct.c thread.c utils.c philo_work.c sem_utils.c \
+			process.c
 
 SRCDIR	= ./srcs/
 SRCS	= $(addprefix $(SRCDIR), $(SRC))
@@ -18,7 +19,7 @@ OBJS	= $(SRCS:.c=.o)
 
 INCDIR	= ./includes/
 
-NAME	= philo_one
+NAME	= philo_three
 
 GCC		= gcc
 GCCFLAG	= -Wall -Wextra -Werror

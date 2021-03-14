@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 17:10:07 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/13 19:11:18 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/14 17:25:12 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int			main(int argc, char **argv)
 	}
 	if (locate == 4)
 		argv_num[locate] = STOP_ONLY_DEATH;
+	if (argv_num[0] == 1)
+		return (main_error_handle(NULL, "Minimum Philosopher is two"));
 	if (stat_init(&stat, argv_num) == EXIT_FAILURE)
 		return (main_error_handle(NULL, "Error duruing malloc"));
 	if (run_thread(&stat) == EXIT_FAILURE)

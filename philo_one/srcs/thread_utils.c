@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   thread_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/28 17:11:46 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/14 17:04:39 by sunpark          ###   ########.fr       */
+/*   Created: 2021/03/14 17:01:29 by sunpark           #+#    #+#             */
+/*   Updated: 2021/03/14 17:01:34 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#include "philo.h"
 
-# include <stdio.h>
-# include <string.h>
-# include "philo_utils.h"
-# include "philo_struct.h"
+void	check_eat_cnt(int *is_not_end, t_stat *stat, int *check, int *check_cnt)
+{
+	int	pnum;
 
-# define STOP_ONLY_DEATH -1
-
-int		run_thread(t_stat *stat);
-
-void	take_forks(t_philo *p);
-void	eat(t_philo *p);
-void	sleep_think(t_philo *p);
-
-#endif
+	pnum = -1;
+	while (++pnum < stat->pcnt)
+	{
+		if (check[pnum])
+			continue ;
+		if (stat->ps[pnum].eat_cnt >= stat->min_eat_pcnt)
+		{
+			check[pnum] = TRUE;
+			*check_cnt = *check_cnt + 1;
+			if (*check_cnt == stat->pcnt)
+			{
+				*is_not_end = FALSE;
+				break ;
+			}
+		}
+	}
+}
