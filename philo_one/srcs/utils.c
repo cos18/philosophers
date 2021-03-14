@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 18:32:57 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/14 17:56:55 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/14 18:48:05 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,27 @@ uint64_t			get_time(void)
 	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
 }
 
+static void			print_message_bt_status(t_stat *stat, int status,
+											int philo_num)
+{
+	if (status == END_EAT)
+		printf("End eat count by each!\n");
+	else
+	{
+		printf("%d %d ", (int)(get_time() - stat->start_t), philo_num);
+		if (status == PHILO_THINK)
+			printf("is thinking\n");
+		else if (status == PHILO_FORK)
+			printf("has taken a fork\n");
+		else if (status == PHILO_EAT)
+			printf("is eating\n");
+		else if (status == PHILO_SLEEP)
+			printf("is sleeping\n");
+		else
+			printf("died\n");
+	}
+}
+
 void				print_message(t_stat *stat, int status, int philo_num)
 {
 	static int		end = FALSE;
@@ -50,22 +71,7 @@ void				print_message(t_stat *stat, int status, int philo_num)
 	pthread_mutex_lock(&(stat->print_mutex));
 	if (end == FALSE)
 	{
-		if (status == END_EAT)
-			printf("End eat count by each!\n");
-		else
-		{
-			printf("%d %d ", (int)(get_time() - stat->start_t), philo_num);
-			if (status == PHILO_THINK)
-				printf("is thinking\n");
-			else if (status == PHILO_FORK)
-				printf("has taken a fork\n");
-			else if (status == PHILO_EAT)
-				printf("is eating\n");
-			else if (status == PHILO_SLEEP)
-				printf("is sleeping\n");
-			else
-				printf("died\n");
-		}
+		print_message_bt_status(stat, status, philo_num);
 		if (status == END_EAT || status == PHILO_DIE)
 			end = TRUE;
 	}
