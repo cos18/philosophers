@@ -6,7 +6,7 @@
 /*   By: sunpark <sunpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 17:12:31 by sunpark           #+#    #+#             */
-/*   Updated: 2021/03/13 19:08:00 by sunpark          ###   ########.fr       */
+/*   Updated: 2021/03/14 13:43:41 by sunpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,8 @@ int			print_message(t_stat *stat, int status, int philo_num);
 
 sem_t		*sem_custom_init(char *name, int value);
 char		*make_sem_name(char *sem_stat_name, int philo_num);
+
+void		check_eat_cnt(int *is_not_end, t_stat *stat, int *check,
+							int *check_cnt);
 
 #endif
